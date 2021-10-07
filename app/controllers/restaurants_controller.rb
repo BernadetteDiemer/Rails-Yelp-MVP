@@ -1,28 +1,34 @@
 class RestaurantsController < ApplicationController
-  def show
-  end
+  before_action :set_restaurant, only: [:show]
 
   def index
-  end
-
-  def edit
-  end
-
-  def update
+    @restaurants = Restaurant.all
   end
 
   def new
+    @restaurant = Restaurant.new
   end
 
   def create
+    @restaurant = Restaurant.new(restaurant_params)
+
+    if @restaurant.save
+      redirect_to @restaurant
+    else
+      render :new
+    end
   end
 
-  def destroy
+  def show
   end
 
   private
 
   def set_restaurant
     @restaurant = Restaurant.find(params[:id])
+  end
+
+  def restaurant_params
+    params.require(:restaurant).permit(:name, :address, :category, :phone_number)
   end
 end
